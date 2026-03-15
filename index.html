@@ -1,0 +1,1292 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+<title>Helenka ⭐</title>
+
+<!-- PWA / iOS Home Screen -->
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="apple-mobile-web-app-title" content="Helenka">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="theme-color" content="#58cc02">
+
+<!-- Inline SVG icons as data URIs (no external icon files needed) -->
+<link rel="apple-touch-icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 180 180'%3E%3Crect width='180' height='180' rx='40' fill='%2358cc02'/%3E%3Ctext x='90' y='120' font-size='90' text-anchor='middle'%3E🌻%3C/text%3E%3C/svg%3E">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Ctext y='28' font-size='28'%3E🌻%3C/text%3E%3C/svg%3E">
+
+<!-- Inline Web Manifest -->
+<link rel="manifest" href="data:application/manifest+json,%7B%22name%22%3A%22Helenka%22%2C%22short_name%22%3A%22Helenka%22%2C%22start_url%22%3A%22.%22%2C%22display%22%3A%22standalone%22%2C%22background_color%22%3A%22%23f7f7f7%22%2C%22theme_color%22%3A%22%2358cc02%22%2C%22orientation%22%3A%22portrait%22%7D">
+
+<!-- Inline Nunito font (subset, no Google Fonts dependency) -->
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Nunito:wght@700;800;900&display=swap');
+</style>
+*{box-sizing:border-box;margin:0;padding:0;}
+html,body{height:100%;background:#f0f0f0;}
+body{display:flex;justify-content:center;align-items:center;font-family:'Nunito',sans-serif;}
+
+/* ── SHELL ── */
+#app{
+  width:100%;max-width:390px;height:100vh;max-height:844px;
+  background:#f7f7f7;display:flex;flex-direction:column;
+  position:relative;overflow:hidden;
+}
+@media(min-width:440px){#app{border-radius:32px;height:844px;box-shadow:0 24px 64px rgba(0,0,0,.18);}}
+.screen{display:none;flex-direction:column;flex:1;overflow:hidden;}
+.screen.active{display:flex;}
+.content{flex:1;overflow-y:auto;padding:0 16px 28px;}
+.content::-webkit-scrollbar{display:none;}
+
+/* ── TOP BAR ── */
+.topbar{
+  padding:16px 16px 12px;display:flex;align-items:center;
+  justify-content:space-between;flex-shrink:0;
+  background:#fff;border-bottom:2px solid #e5e5e5;
+}
+.topbar-title{font-size:20px;font-weight:900;color:#1a1a1a;letter-spacing:-.3px;}
+.crystal-pill{
+  display:flex;align-items:center;gap:6px;
+  background:#ede9fe;border-radius:20px;padding:6px 14px;
+  font-size:14px;font-weight:800;color:#6d28d9;
+  border:2px solid #c4b5fd;
+}
+.crystal-dot{font-size:15px;line-height:1;}
+
+/* ── BOTTOM NAV ── */
+.bottomnav{
+  background:#fff;border-top:2px solid #e5e5e5;
+  display:flex;flex-shrink:0;padding:8px 0 16px;
+}
+.nav-btn{
+  flex:1;display:flex;flex-direction:column;align-items:center;gap:3px;
+  background:none;border:none;cursor:pointer;padding:4px 0;
+  font-family:'Nunito',sans-serif;
+}
+.nav-ico{font-size:22px;line-height:1;}
+.nav-lbl{font-size:11px;font-weight:800;color:#afafaf;text-transform:uppercase;letter-spacing:.3px;}
+.nav-btn.on .nav-lbl{color:#58cc02;}
+.nav-pip{width:5px;height:5px;border-radius:50%;background:#58cc02;opacity:0;margin-top:1px;}
+.nav-btn.on .nav-pip{opacity:1;}
+
+/* ── HERO CARD ── */
+.hero-card{
+  background:#fff;border-radius:20px;
+  border:2px solid #e5e5e5;box-shadow:0 4px 0 #e5e5e5;
+  padding:18px;margin:14px 16px 12px;
+  display:flex;align-items:center;gap:14px;
+}
+.hero-face{
+  width:60px;height:60px;border-radius:50%;
+  background:#fef3c7;border:3px solid #fde68a;
+  display:flex;align-items:center;justify-content:center;
+  font-size:30px;flex-shrink:0;
+}
+.hero-hi{font-size:12px;color:#afafaf;font-weight:700;text-transform:uppercase;letter-spacing:.4px;}
+.hero-name{font-size:22px;font-weight:900;color:#1a1a1a;margin:2px 0;}
+.hero-sub{font-size:13px;color:#ff9600;font-weight:800;}
+
+/* ── STATS ── */
+.stats-row{display:flex;gap:10px;margin-bottom:16px;}
+.stat{
+  flex:1;background:#fff;border:2px solid #e5e5e5;
+  box-shadow:0 3px 0 #e5e5e5;border-radius:16px;
+  padding:12px 8px;text-align:center;
+}
+.stat-val{font-size:22px;font-weight:900;color:#1a1a1a;}
+.stat-lbl{font-size:10px;color:#afafaf;font-weight:800;margin-top:2px;text-transform:uppercase;letter-spacing:.3px;}
+
+/* ── SECTION LABEL ── */
+.sec-lbl{font-size:11px;font-weight:800;color:#afafaf;letter-spacing:.6px;text-transform:uppercase;margin:4px 0 10px;}
+
+/* ── MINI ROW (home today list) ── */
+.mini-row{
+  background:#fff;border:2px solid #e5e5e5;box-shadow:0 3px 0 #e5e5e5;
+  border-radius:16px;padding:12px 14px;margin-bottom:10px;
+  display:flex;align-items:center;gap:10px;
+}
+.mini-ico{font-size:18px;width:24px;text-align:center;}
+.mini-lbl{font-size:14px;font-weight:800;color:#1a1a1a;flex:1;}
+.mini-bar-wrap{width:70px;}
+.mini-bar{height:8px;background:#e5e5e5;border-radius:8px;overflow:hidden;margin-bottom:2px;}
+.mini-bar-fill{height:100%;border-radius:8px;transition:width .3s;}
+.mini-bar-txt{font-size:10px;color:#afafaf;font-weight:700;text-align:right;}
+.mini-check{
+  width:26px;height:26px;border-radius:50%;
+  background:#d7f5c3;border:2px solid #89e219;
+  display:flex;align-items:center;justify-content:center;
+  font-size:13px;color:#58cc02;font-weight:900;
+}
+
+/* ── ACT CARD ── */
+.act-card{
+  background:#fff;border:2px solid #e5e5e5;
+  box-shadow:0 4px 0 #e5e5e5;border-radius:20px;
+  padding:16px;margin-bottom:14px;
+  border-left:4px solid transparent;
+}
+.act-card.done-card{box-shadow:0 4px 0 #d7f5c3;border-color:#89e219;border-left-color:#58cc02;}
+.act-top{display:flex;align-items:center;gap:12px;margin-bottom:14px;}
+.act-icon{
+  width:46px;height:46px;border-radius:14px;
+  display:flex;align-items:center;justify-content:center;
+  font-size:22px;flex-shrink:0;border:2px solid transparent;
+}
+.act-info{flex:1;}
+.act-name{font-size:15px;font-weight:900;color:#1a1a1a;}
+.act-desc{font-size:12px;color:#afafaf;font-weight:700;margin-top:2px;}
+.act-rew{
+  font-size:13px;font-weight:800;color:#6d28d9;
+  background:#ede9fe;border-radius:10px;padding:4px 8px;
+  white-space:nowrap;
+}
+.prog-track{height:14px;background:#e5e5e5;border-radius:14px;overflow:hidden;margin-bottom:8px;}
+.prog-fill{height:100%;border-radius:14px;transition:width .4s ease;}
+.prog-meta{display:flex;justify-content:space-between;font-size:12px;color:#afafaf;font-weight:700;margin-bottom:12px;}
+
+/* ── BUTTONS ── */
+.btn{
+  width:100%;padding:13px;border-radius:14px;border:none;
+  font-family:'Nunito',sans-serif;font-size:15px;font-weight:800;
+  cursor:pointer;transition:transform .1s, box-shadow .1s;
+  letter-spacing:.2px;
+}
+.btn:active{transform:translateY(3px);box-shadow:none !important;}
+.btn-orange{background:#ff9600;color:#fff;box-shadow:0 4px 0 #cc6a00;}
+.btn-soft{background:#fff3e0;color:#cc6a00;box-shadow:0 4px 0 #f5d49a;border:2px solid #f5d49a;}
+.btn-green{background:#58cc02;color:#fff;box-shadow:0 4px 0 #3d8f00;cursor:default;}
+.btn-ghost{
+  background:#fff;border:2px solid #e5e5e5;
+  box-shadow:0 3px 0 #e5e5e5;
+  color:#afafaf;font-family:'Nunito',sans-serif;
+  font-size:14px;font-weight:800;border-radius:14px;
+  padding:13px;width:100%;cursor:pointer;margin-top:6px;
+  display:flex;align-items:center;justify-content:center;gap:6px;
+}
+.btn-ghost:active{transform:translateY(3px);box-shadow:none;}
+
+/* ── SHOP / REWARDS ── */
+.shop-bal{
+  background:#fff;border:2px solid #e5e5e5;box-shadow:0 4px 0 #e5e5e5;
+  border-radius:20px;padding:18px 20px;
+  display:flex;justify-content:space-between;align-items:center;
+  margin-bottom:16px;
+}
+.bal-lbl{font-size:10px;color:#afafaf;font-weight:800;text-transform:uppercase;letter-spacing:.4px;margin-bottom:4px;}
+.bal-big{font-size:32px;font-weight:900;color:#1a1a1a;}
+.bal-sm{font-size:16px;font-weight:800;color:#1a1a1a;}
+.rew-row{
+  display:flex;align-items:center;gap:12px;
+  background:#fff;border:2px solid #e5e5e5;box-shadow:0 3px 0 #e5e5e5;
+  border-radius:16px;padding:13px 14px;margin-bottom:10px;
+}
+.rew-ico{font-size:24px;width:28px;text-align:center;}
+.rew-info{flex:1;}
+.rew-name{font-size:14px;font-weight:800;color:#1a1a1a;}
+.rew-cost{font-size:12px;color:#6d28d9;font-weight:700;margin-top:1px;}
+.rew-btn{
+  padding:9px 16px;border-radius:12px;border:none;
+  font-family:'Nunito',sans-serif;font-size:13px;font-weight:800;
+  cursor:pointer;white-space:nowrap;
+}
+.rew-btn-ok{background:#58cc02;color:#fff;box-shadow:0 3px 0 #3d8f00;}
+.rew-btn-ok:active{transform:translateY(3px);box-shadow:none;}
+.rew-btn-no{background:#f0f0f0;color:#c0c0c0;cursor:not-allowed;}
+
+/* ── ADMIN ── */
+.admin-menu-item{
+  display:flex;align-items:center;gap:14px;
+  background:#fff;border:2px solid #e5e5e5;box-shadow:0 3px 0 #e5e5e5;
+  border-radius:16px;padding:16px;margin-bottom:12px;cursor:pointer;
+}
+.admin-menu-item:active{transform:translateY(2px);box-shadow:none;}
+.admin-menu-ico{font-size:22px;width:28px;text-align:center;}
+.admin-menu-label{font-size:15px;font-weight:800;color:#1a1a1a;flex:1;}
+.admin-menu-arr{font-size:18px;color:#c0c0c0;font-weight:700;}
+.admin-row{
+  display:flex;align-items:center;gap:10px;
+  background:#fff;border:2px solid #e5e5e5;
+  border-radius:14px;padding:12px 14px;margin-bottom:8px;
+}
+.admin-row-emoji{font-size:18px;width:24px;text-align:center;}
+.admin-row-label{font-size:13px;font-weight:800;color:#1a1a1a;flex:1;}
+.admin-row-sub{font-size:11px;color:#afafaf;font-weight:700;}
+.del-btn{
+  background:#fff1f0;border:2px solid #ffcccc;border-radius:10px;
+  padding:6px 12px;font-size:12px;font-weight:800;color:#ff4b4b;
+  cursor:pointer;font-family:'Nunito',sans-serif;flex-shrink:0;
+}
+.inp{
+  width:100%;padding:11px 14px;border:2px solid #e5e5e5;
+  border-radius:14px;font-family:'Nunito',sans-serif;
+  font-size:14px;font-weight:700;color:#1a1a1a;background:#fff;outline:none;
+}
+.inp:focus{border-color:#58cc02;box-shadow:0 0 0 3px #d7f5c3;}
+.inp-lbl{font-size:11px;font-weight:800;color:#afafaf;text-transform:uppercase;letter-spacing:.4px;margin-bottom:5px;}
+.inp-row{margin-bottom:12px;}
+.row2{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
+.chk-row{display:flex;align-items:center;gap:8px;margin-bottom:12px;}
+.chk-row input{width:18px;height:18px;accent-color:#58cc02;cursor:pointer;}
+.chk-row label{font-size:13px;font-weight:700;color:#1a1a1a;cursor:pointer;}
+.back-btn{
+  display:flex;align-items:center;gap:4px;background:none;border:none;
+  font-family:'Nunito',sans-serif;font-size:14px;font-weight:800;
+  color:#afafaf;cursor:pointer;padding:0 0 14px 0;
+}
+.emoji-grid{display:flex;flex-wrap:wrap;gap:8px;margin-top:6px;}
+.em-opt{
+  font-size:20px;width:40px;height:40px;border-radius:12px;
+  border:2px solid #e5e5e5;background:#fff;cursor:pointer;
+  display:flex;align-items:center;justify-content:center;
+}
+.em-opt.sel{border:3px solid #58cc02;background:#d7f5c3;}
+.form-card{
+  background:#fff;border:2px solid #e5e5e5;box-shadow:0 4px 0 #e5e5e5;
+  border-radius:20px;padding:18px;margin-top:8px;
+}
+.form-title{font-size:14px;font-weight:900;color:#1a1a1a;margin-bottom:16px;}
+.divider{height:2px;background:#e5e5e5;margin:14px 0;}
+.admin-note{font-size:11px;color:#afafaf;font-weight:700;text-align:center;margin-top:10px;line-height:1.6;}
+
+/* ── OVERLAYS ── */
+.overlay{
+  position:fixed;inset:0;background:rgba(0,0,0,.45);
+  display:flex;align-items:center;justify-content:center;
+  z-index:200;padding:20px;
+}
+.popup-box{
+  background:#fff;border-radius:24px;padding:30px 24px;
+  text-align:center;width:100%;max-width:300px;
+  border:2px solid #e5e5e5;box-shadow:0 6px 0 #e5e5e5;
+  animation:popIn .22s ease;
+}
+@keyframes popIn{from{transform:scale(.8);opacity:0;}to{transform:scale(1);opacity:1;}}
+.pop-ico{font-size:52px;margin-bottom:12px;}
+.pop-title{font-size:20px;font-weight:900;color:#1a1a1a;margin-bottom:6px;}
+.pop-sub{font-size:14px;color:#afafaf;font-weight:700;margin-bottom:20px;line-height:1.5;}
+.pop-btn{
+  background:#58cc02;color:#fff;border:none;border-radius:14px;
+  padding:14px;font-family:'Nunito',sans-serif;font-size:15px;
+  font-weight:800;cursor:pointer;width:100%;box-shadow:0 4px 0 #3d8f00;
+}
+.pop-btn:active{transform:translateY(3px);box-shadow:none;}
+.pop-btn2{
+  background:#f0f0f0;color:#1a1a1a;border:none;border-radius:14px;
+  padding:14px;font-family:'Nunito',sans-serif;font-size:15px;
+  font-weight:800;cursor:pointer;width:100%;margin-top:10px;
+}
+
+/* ── PIN ── */
+.pin-stars{
+  margin:14px 0 6px;text-align:center;min-height:44px;
+  display:flex;align-items:center;justify-content:center;gap:10px;
+}
+.pin-dot{
+  width:14px;height:14px;border-radius:50%;
+  background:#e5e5e5;border:2px solid #cccccc;transition:background .15s;
+}
+.pin-dot.filled{background:#58cc02;border-color:#3d8f00;}
+.pin-pad{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:16px;}
+.pin-key{
+  background:#fff;border:2px solid #e5e5e5;box-shadow:0 3px 0 #e5e5e5;
+  border-radius:16px;padding:15px;
+  font-family:'Nunito',sans-serif;font-size:20px;font-weight:800;
+  color:#1a1a1a;cursor:pointer;transition:transform .1s;
+}
+.pin-key:active{transform:translateY(3px);box-shadow:none;}
+.pin-key.del{color:#ff4b4b;}
+.pin-err{color:#ff4b4b;font-size:13px;font-weight:800;text-align:center;margin-top:10px;min-height:20px;}
+.pin-title{font-size:17px;font-weight:900;color:#1a1a1a;text-align:center;margin-bottom:4px;}
+.pin-sub{font-size:12px;color:#afafaf;font-weight:700;text-align:center;}
+
+/* ── PARENT CONFIRM ── */
+.confirm-desc{font-size:14px;color:#1a1a1a;font-weight:700;text-align:center;margin-bottom:8px;}
+.confirm-act{font-size:24px;text-align:center;margin-bottom:16px;font-weight:900;}
+
+/* ── SAVE TOAST ── */
+.save-toast{
+  position:fixed;bottom:90px;left:50%;transform:translateX(-50%) translateY(20px);
+  background:#1a1a1a;color:#fff;font-family:'Nunito',sans-serif;
+  font-size:12px;font-weight:800;padding:8px 18px;border-radius:20px;
+  opacity:0;transition:opacity .2s, transform .2s;pointer-events:none;
+  z-index:300;white-space:nowrap;
+}
+.save-toast.show{opacity:1;transform:translateX(-50%) translateY(0);}
+
+@keyframes float{0%{transform:translateY(0) rotate(0);opacity:1;}100%{transform:translateY(-80px) rotate(30deg);opacity:0;}}
+.confetti-piece{position:absolute;width:8px;height:8px;border-radius:2px;animation:float .8s ease forwards;}
+</style>
+</head>
+<body>
+<div id="app">
+
+  <!-- HOME SCREEN -->
+  <div class="screen active" id="screen-home">
+    <div class="topbar">
+      <span class="topbar-title">Cześć, Helenka! 👋</span>
+      <div class="crystal-pill"><span class="crystal-dot">💎</span><span id="home-coins">0</span> kryształków</div>
+    </div>
+    <div class="hero-card">
+      <div class="hero-face">🌻</div>
+      <div>
+        <div class="hero-hi">dzisiaj zrobiłaś</div>
+        <div class="hero-name" id="home-done-label">0 z 0 zadań</div>
+        <div class="hero-sub" id="home-streak">🔥 0-dniowa seria</div>
+      </div>
+    </div>
+    <div class="content">
+      <div class="stats-row">
+        <div class="stat"><div class="stat-val" id="h-coins">0</div><div class="stat-lbl">kryształków</div></div>
+        <div class="stat"><div class="stat-val" id="h-streak">0</div><div class="stat-lbl">dni z rzędu</div></div>
+        <div class="stat"><div class="stat-val" id="h-done">0</div><div class="stat-lbl">ukończone</div></div>
+      </div>
+      <div class="sec-lbl">Dzisiaj</div>
+      <div id="home-acts-list"></div>
+    </div>
+  </div>
+
+  <!-- ACTIVITIES SCREEN -->
+  <div class="screen" id="screen-acts">
+    <div class="topbar">
+      <span class="topbar-title">Aktywności</span>
+      <div class="crystal-pill"><span class="crystal-dot">💎</span><span id="acts-coins">0</span> kryształków</div>
+    </div>
+    <div class="content" style="padding-top:8px;">
+      <div id="acts-list"></div>
+      <button class="btn-ghost" onclick="nav('admin')">+ dodaj aktywność (rodzic)</button>
+    </div>
+  </div>
+
+  <!-- REWARDS SCREEN -->
+  <div class="screen" id="screen-rewards">
+    <div class="topbar">
+      <span class="topbar-title">Nagrody</span>
+      <div class="crystal-pill"><span class="crystal-dot">💎</span><span id="rew-coins-top">0</span> kryształków</div>
+    </div>
+    <div class="content" style="padding-top:8px;">
+      <div class="shop-bal">
+        <div><div class="bal-lbl">Twoje kryształki</div><div class="bal-big" id="rew-bal">0</div></div>
+        <div style="text-align:right;"><div class="bal-lbl">Zebrane łącznie</div><div class="bal-sm" id="rew-earned">0 💎</div></div>
+      </div>
+      <div class="sec-lbl">Wymień na</div>
+      <div id="rewards-list"></div>
+      <button class="btn-ghost" onclick="nav('admin')" style="margin-top:4px;">+ dodaj nagrodę (rodzic)</button>
+    </div>
+  </div>
+
+  <!-- ADMIN SCREEN -->
+  <div class="screen" id="screen-admin">
+    <div class="topbar">
+      <span class="topbar-title">Strefa rodzica</span>
+      <button style="background:none;border:none;font-family:'Quicksand',sans-serif;font-size:12px;font-weight:700;color:#A09A93;cursor:pointer;" onclick="exitAdmin()">Wyjdź</button>
+    </div>
+    <div class="content" style="padding-top:8px;">
+      <div class="admin-menu-item" onclick="showAdminActs()">
+        <span class="admin-menu-ico">📋</span>
+        <span class="admin-menu-label">Aktywności</span>
+        <span class="admin-menu-arr">›</span>
+      </div>
+      <div class="admin-menu-item" onclick="showAdminRewards()">
+        <span class="admin-menu-ico">🎁</span>
+        <span class="admin-menu-label">Nagrody</span>
+        <span class="admin-menu-arr">›</span>
+      </div>
+      <div class="admin-menu-item" onclick="showAdminPin()">
+        <span class="admin-menu-ico">🔐</span>
+        <span class="admin-menu-label">Zmień PIN</span>
+        <span class="admin-menu-arr">›</span>
+      </div>
+      <div class="admin-menu-item" onclick="confirmResetDay()">
+        <span class="admin-menu-ico">🔄</span>
+        <span class="admin-menu-label">Resetuj dzisiejszy postęp</span>
+        <span class="admin-menu-arr">›</span>
+      </div>
+      <div class="admin-note">Możesz zmienić PIN w ustawieniach poniżej.</div>
+    </div>
+  </div>
+
+  <!-- ADMIN: ACTIVITIES -->
+  <div class="screen" id="screen-admin-acts">
+    <div class="topbar">
+      <span class="topbar-title">Aktywności</span>
+    </div>
+    <div class="content" style="padding-top:4px;">
+      <button class="back-btn" onclick="nav('admin')">← Wróć</button>
+      <div id="admin-acts-list"></div>
+      <div class="form-card" id="add-act-form">
+        <div class="form-title">Dodaj nową aktywność</div>
+        <div class="inp-row">
+          <div class="inp-lbl">Emoji</div>
+          <div class="emoji-grid" id="act-emoji-grid"></div>
+        </div>
+        <div class="inp-row">
+          <div class="inp-lbl">Nazwa</div>
+          <input class="inp" id="new-act-name" placeholder="np. Pomoc przy obiedzie">
+        </div>
+        <div class="inp-row">
+          <div class="inp-lbl">Opis</div>
+          <input class="inp" id="new-act-desc" placeholder="np. Nakrycie stołu">
+        </div>
+        <div class="row2">
+          <div class="inp-row">
+            <div class="inp-lbl">Cel</div>
+            <input class="inp" id="new-act-goal" type="number" min="1" value="1" placeholder="1">
+          </div>
+          <div class="inp-row">
+            <div class="inp-lbl">Jednostka</div>
+            <input class="inp" id="new-act-unit" placeholder="min / str. / (puste)">
+          </div>
+        </div>
+        <div class="row2">
+          <div class="inp-row">
+            <div class="inp-lbl">Krok na tap</div>
+            <input class="inp" id="new-act-step" type="number" min="1" value="1">
+          </div>
+          <div class="inp-row">
+            <div class="inp-lbl">Kryształki</div>
+            <input class="inp" id="new-act-reward" type="number" min="1" value="10">
+          </div>
+        </div>
+        <div class="chk-row">
+          <input type="checkbox" id="new-act-confirm">
+          <label for="new-act-confirm">Wymaga potwierdzenia rodzica</label>
+        </div>
+        <button class="btn btn-orange" onclick="addActivity()">Dodaj aktywność</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ADMIN: REWARDS -->
+  <div class="screen" id="screen-admin-rewards">
+    <div class="topbar">
+      <span class="topbar-title">Nagrody</span>
+    </div>
+    <div class="content" style="padding-top:4px;">
+      <button class="back-btn" onclick="nav('admin')">← Wróć</button>
+      <div id="admin-rewards-list"></div>
+      <div class="form-card">
+        <div class="form-title">Dodaj nagrodę</div>
+        <div class="inp-row">
+          <div class="inp-lbl">Emoji</div>
+          <div class="emoji-grid" id="rew-emoji-grid"></div>
+        </div>
+        <div class="inp-row">
+          <div class="inp-lbl">Nazwa nagrody</div>
+          <input class="inp" id="new-rew-name" placeholder="np. Wspólne pieczenie ciasta">
+        </div>
+        <div class="inp-row">
+          <div class="inp-lbl">Koszt w kryształkach</div>
+          <input class="inp" id="new-rew-cost" type="number" min="1" value="30">
+        </div>
+        <button class="btn btn-orange" onclick="addReward()">Dodaj nagrodę</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- BOTTOM NAV -->
+  <div class="bottomnav">
+    <button class="nav-btn on" data-screen="home" onclick="nav('home')">
+      <span class="nav-ico">☀️</span>
+      <span class="nav-lbl">Dzisiaj</span>
+      <div class="nav-pip"></div>
+    </button>
+    <button class="nav-btn" data-screen="acts" onclick="nav('acts')">
+      <span class="nav-ico">📋</span>
+      <span class="nav-lbl">Aktywności</span>
+      <div class="nav-pip"></div>
+    </button>
+    <button class="nav-btn" data-screen="rewards" onclick="nav('rewards')">
+      <span class="nav-ico">🎁</span>
+      <span class="nav-lbl">Nagrody</span>
+      <div class="nav-pip"></div>
+    </button>
+  </div>
+
+  <!-- ADMIN: PIN CHANGE -->
+  <div class="screen" id="screen-admin-pin">
+    <div class="topbar">
+      <span class="topbar-title">Zmień PIN</span>
+    </div>
+    <div class="content" style="padding-top:4px;">
+      <button class="back-btn" onclick="nav('admin')">← Wróć</button>
+      <div style="background:#fff;border:0.5px solid #EDE8E1;border-radius:18px;padding:20px;">
+        <div class="pin-title" id="pin-change-title">Wpisz nowy PIN</div>
+        <div class="pin-sub">4 cyfry</div>
+        <div class="pin-stars" id="pin-change-dots"></div>
+        <div class="pin-pad">
+          <button class="pin-key" onclick="pinChangeKey('1')">1</button>
+          <button class="pin-key" onclick="pinChangeKey('2')">2</button>
+          <button class="pin-key" onclick="pinChangeKey('3')">3</button>
+          <button class="pin-key" onclick="pinChangeKey('4')">4</button>
+          <button class="pin-key" onclick="pinChangeKey('5')">5</button>
+          <button class="pin-key" onclick="pinChangeKey('6')">6</button>
+          <button class="pin-key" onclick="pinChangeKey('7')">7</button>
+          <button class="pin-key" onclick="pinChangeKey('8')">8</button>
+          <button class="pin-key" onclick="pinChangeKey('9')">9</button>
+          <button class="pin-key" onclick="pinChangeKey('')">‹</button>
+          <button class="pin-key" onclick="pinChangeKey('0')">0</button>
+          <button class="pin-key del" onclick="pinChangeDel()">⌫</button>
+        </div>
+        <div class="pin-err" id="pin-change-err"></div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<div class="save-toast" id="save-toast">💾 Zapisano</div>
+
+<!-- PIN MODAL OVERLAY -->
+<div class="overlay" id="pin-overlay" style="display:none;">
+  <div class="popup-box" style="max-width:280px;">
+    <div class="pin-title">Strefa rodzica</div>
+    <div class="pin-sub">Wpisz PIN, żeby wejść</div>
+    <div class="pin-stars" id="modal-pin-dots">
+      <div class="pin-dot" id="pd0"></div>
+      <div class="pin-dot" id="pd1"></div>
+      <div class="pin-dot" id="pd2"></div>
+      <div class="pin-dot" id="pd3"></div>
+    </div>
+    <div class="pin-pad">
+      <button class="pin-key" onclick="modalPinKey('1')">1</button>
+      <button class="pin-key" onclick="modalPinKey('2')">2</button>
+      <button class="pin-key" onclick="modalPinKey('3')">3</button>
+      <button class="pin-key" onclick="modalPinKey('4')">4</button>
+      <button class="pin-key" onclick="modalPinKey('5')">5</button>
+      <button class="pin-key" onclick="modalPinKey('6')">6</button>
+      <button class="pin-key" onclick="modalPinKey('7')">7</button>
+      <button class="pin-key" onclick="modalPinKey('8')">8</button>
+      <button class="pin-key" onclick="modalPinKey('9')">9</button>
+      <button class="pin-key" onclick="modalPinCancel()" style="font-size:11px;color:#A09A93;">Anuluj</button>
+      <button class="pin-key" onclick="modalPinKey('0')">0</button>
+      <button class="pin-key del" onclick="modalPinDel()">⌫</button>
+    </div>
+    <div class="pin-err" id="modal-pin-err"></div>
+  </div>
+</div>
+
+<!-- POPUP OVERLAY -->
+<div class="overlay" id="popup-overlay" style="display:none;">
+  <div class="popup-box">
+    <div class="pop-ico" id="pop-ico">🎉</div>
+    <div class="pop-title" id="pop-title">Brawo!</div>
+    <div class="pop-sub" id="pop-sub">Tak trzymaj!</div>
+    <button class="pop-btn" id="pop-ok" onclick="closePopup()">Super!</button>
+    <button class="pop-btn2" id="pop-cancel" style="display:none;" onclick="closePopup()">Anuluj</button>
+  </div>
+</div>
+
+<!-- PARENT CONFIRM OVERLAY -->
+<div class="overlay" id="confirm-overlay" style="display:none;">
+  <div class="popup-box">
+    <div class="pop-ico">👋</div>
+    <div class="pop-title">Rodzicu, sprawdź!</div>
+    <div class="confirm-act" id="confirm-act-name"></div>
+    <div class="confirm-desc" id="confirm-act-desc"></div>
+    <button class="pop-btn" onclick="confirmYes()">Tak, zrobione! ✓</button>
+    <button class="pop-btn2" onclick="confirmNo()">Jeszcze nie</button>
+  </div>
+</div>
+
+<script>
+// ==================== DEFAULTS ====================
+const ACT_COLORS = [
+  {color:'#74C4A8',bg:'#EDFAF5'},
+  {color:'#7B8EE0',bg:'#F0F1FC'},
+  {color:'#E08E7B',bg:'#FDF3F1'},
+  {color:'#E8A85C',bg:'#FFF8F0'},
+  {color:'#C48BB0',bg:'#F9F0F6'},
+];
+
+const ACT_EMOJIS = ['🧸','✏️','📖','🦷','🎨','🧩','🌿','🛏️','🍎','🚿','🐕','🎵','⚽','🧹','📚','🌟','🎯','🧼','🍱','🤸','🌸','🎪'];
+const REW_EMOJIS = ['✨','📱','🍦','🎬','🛍️','🎡','🎮','🍕','🎠','🧁','🎪','🎭','🌈','🎁','🏊','🎢','🎨','🐾','🎈','🍰'];
+
+function todayStr(){return new Date().toISOString().slice(0,10);}
+function yesterdayStr(){const d=new Date();d.setDate(d.getDate()-1);return d.toISOString().slice(0,10);}
+function uid(){return 'id'+Math.random().toString(36).slice(2,8);}
+
+const DEFAULT_ACTS = [
+  {id:'a1',emoji:'🧸',name:'Pozbieraj zabawki',desc:'Wszystko na swoje miejsce',goal:1,unit:'',step:1,reward:10,colorIdx:0,parentConfirm:true},
+  {id:'a2',emoji:'✏️',name:'Ćwiczenia pisania',desc:'15 minut w zeszycie',goal:15,unit:'min',step:5,reward:15,colorIdx:1,parentConfirm:false},
+  {id:'a3',emoji:'📖',name:'Czytanie',desc:'Co najmniej 10 stron',goal:10,unit:'str.',step:2,reward:12,colorIdx:0,parentConfirm:false},
+  {id:'a4',emoji:'🦷',name:'Mycie zębów',desc:'Rano i wieczorem',goal:2,unit:'',step:1,reward:8,colorIdx:2,parentConfirm:false},
+];
+
+const DEFAULT_REWARDS = [
+  {id:'r1',emoji:'✨',name:'Zestaw naklejek',cost:20},
+  {id:'r2',emoji:'📱',name:'30 min extra ekranu',cost:30},
+  {id:'r3',emoji:'🍦',name:'Lody do wyboru',cost:40},
+  {id:'r4',emoji:'🎬',name:'Wybór wieczornego filmu',cost:60},
+  {id:'r5',emoji:'🛍️',name:'Wycieczka do sklepu z zabawkami',cost:120},
+  {id:'r6',emoji:'🎡',name:'Dzień w parku rozrywki',cost:200},
+];
+
+// ==================== STATE ====================
+let S = {
+  coins: 0,
+  earnedAllTime: 0,
+  activities: [],
+  rewards: [],
+  progress: {},       // {actId: value}
+  streak: 0,
+  lastCompletedDate: '',
+  pin: '2684',
+  screen: 'home',
+  selectedActEmoji: '🌟',
+  selectedRewEmoji: '🎁',
+  pinChangeInput: '',
+  pinChangePhase: 'new1',  // 'new1' | 'new2'
+  pinChangeFirst: '',
+  pendingConfirmActId: null,
+  modalPinInput: '',
+};
+
+// ==================== STORAGE ====================
+let _toastTimer;
+function save(){
+  try{
+    localStorage.setItem('helenka_v2', JSON.stringify({
+      coins:S.coins, earnedAllTime:S.earnedAllTime,
+      activities:S.activities, rewards:S.rewards,
+      progress:S.progress, streak:S.streak,
+      lastCompletedDate:S.lastCompletedDate,
+      pin:S.pin, savedDate:todayStr()
+    }));
+    const t=document.getElementById('save-toast');
+    if(t){t.classList.add('show');clearTimeout(_toastTimer);_toastTimer=setTimeout(()=>t.classList.remove('show'),1400);}
+  }catch(e){}
+}
+
+function load(){
+  try{
+    const raw = localStorage.getItem('helenka_v2');
+    if(!raw){
+      S.activities = JSON.parse(JSON.stringify(DEFAULT_ACTS));
+      S.rewards = JSON.parse(JSON.stringify(DEFAULT_REWARDS));
+      return;
+    }
+    const d = JSON.parse(raw);
+    S.coins = d.coins||0;
+    S.earnedAllTime = d.earnedAllTime||0;
+    S.activities = d.activities||JSON.parse(JSON.stringify(DEFAULT_ACTS));
+    S.rewards = d.rewards||JSON.parse(JSON.stringify(DEFAULT_REWARDS));
+    S.pin = d.pin||'1234';
+    S.lastCompletedDate = d.lastCompletedDate||'';
+    S.streak = d.streak||0;
+
+    const today = todayStr();
+    if(d.savedDate !== today){
+      // New day: reset progress
+      const hadProgress = d.progress && Object.values(d.progress).some(v=>v>0);
+      if(hadProgress){
+        if(d.savedDate === yesterdayStr()){
+          S.streak++;
+        } else {
+          S.streak = 1;
+        }
+        S.lastCompletedDate = d.savedDate;
+      } else if(d.savedDate !== yesterdayStr()){
+        // Gap with no completions → reset streak
+        S.streak = 0;
+      }
+      S.progress = {};
+    } else {
+      S.progress = d.progress||{};
+    }
+  }catch(e){
+    S.activities = JSON.parse(JSON.stringify(DEFAULT_ACTS));
+    S.rewards = JSON.parse(JSON.stringify(DEFAULT_REWARDS));
+  }
+}
+
+// ==================== NAVIGATION ====================
+function nav(screen){
+  if(screen==='admin'){
+    openPinModal();
+    return;
+  }
+  S.screen = screen;
+  document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
+  const el = document.getElementById('screen-'+screen);
+  if(el) el.classList.add('active');
+  // only highlight main nav tabs
+  const mainScreens = ['home','acts','rewards'];
+  document.querySelectorAll('.nav-btn').forEach(b=>{
+    b.classList.toggle('on', b.dataset.screen===screen);
+  });
+  // hide nav on admin screens
+  document.querySelector('.bottomnav').style.display =
+    mainScreens.includes(screen) ? 'flex' : 'none';
+  render();
+}
+
+function showAdminActs(){
+  S.screen='admin-acts';
+  document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
+  document.getElementById('screen-admin-acts').classList.add('active');
+  document.querySelector('.bottomnav').style.display='none';
+  renderAdminActs();
+}
+
+function showAdminRewards(){
+  S.screen='admin-rewards';
+  document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
+  document.getElementById('screen-admin-rewards').classList.add('active');
+  document.querySelector('.bottomnav').style.display='none';
+  renderAdminRewards();
+}
+
+function showAdminPin(){
+  S.screen='admin-pin';
+  S.pinChangeInput='';
+  S.pinChangePhase='new1';
+  S.pinChangeFirst='';
+  document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
+  document.getElementById('screen-admin-pin').classList.add('active');
+  document.querySelector('.bottomnav').style.display='none';
+  updatePinChangeDots();
+  document.getElementById('pin-change-title').textContent='Wpisz nowy PIN';
+  document.getElementById('pin-change-err').textContent='';
+}
+
+function exitAdmin(){
+  nav('home');
+}
+
+// ==================== PIN MODAL ====================
+function openPinModal(){
+  S.modalPinInput='';
+  document.getElementById('pin-overlay').style.display='flex';
+  document.getElementById('modal-pin-err').textContent='';
+  updateModalDots();
+}
+
+function modalPinKey(d){
+  if(S.modalPinInput.length>=4) return;
+  S.modalPinInput += d;
+  updateModalDots();
+  if(S.modalPinInput.length===4){
+    setTimeout(()=>{
+      if(S.modalPinInput===S.pin){
+        document.getElementById('pin-overlay').style.display='none';
+        S.modalPinInput='';
+        S.screen='admin';
+        document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
+        document.getElementById('screen-admin').classList.add('active');
+        document.querySelectorAll('.nav-btn').forEach(b=>b.classList.remove('on'));
+      } else {
+        document.getElementById('modal-pin-err').textContent='Błędny PIN. Spróbuj jeszcze raz.';
+        S.modalPinInput='';
+        updateModalDots();
+      }
+    },150);
+  }
+}
+
+function modalPinDel(){
+  S.modalPinInput = S.modalPinInput.slice(0,-1);
+  updateModalDots();
+  document.getElementById('modal-pin-err').textContent='';
+}
+
+function modalPinCancel(){
+  document.getElementById('pin-overlay').style.display='none';
+  S.modalPinInput='';
+}
+
+function updateModalDots(){
+  for(let i=0;i<4;i++){
+    document.getElementById('pd'+i).classList.toggle('filled', i<S.modalPinInput.length);
+  }
+}
+
+// ==================== PIN CHANGE ====================
+function pinChangeKey(d){
+  if(S.pinChangeInput.length>=4) return;
+  S.pinChangeInput += d;
+  updatePinChangeDots();
+  document.getElementById('pin-change-err').textContent='';
+  if(S.pinChangeInput.length===4){
+    setTimeout(()=>{
+      if(S.pinChangePhase==='new1'){
+        S.pinChangeFirst = S.pinChangeInput;
+        S.pinChangeInput = '';
+        S.pinChangePhase = 'new2';
+        document.getElementById('pin-change-title').textContent='Powtórz PIN';
+        updatePinChangeDots();
+      } else {
+        if(S.pinChangeInput===S.pinChangeFirst){
+          S.pin = S.pinChangeInput;
+          save();
+          S.pinChangeInput='';
+          S.pinChangePhase='new1';
+          S.pinChangeFirst='';
+          updatePinChangeDots();
+          document.getElementById('pin-change-title').textContent='Wpisz nowy PIN';
+          showPopup('🔐','PIN zmieniony!','Nowy PIN jest zapisany.');
+        } else {
+          document.getElementById('pin-change-err').textContent='PINy się nie zgadzają. Spróbuj ponownie.';
+          S.pinChangeInput='';
+          S.pinChangePhase='new1';
+          S.pinChangeFirst='';
+          document.getElementById('pin-change-title').textContent='Wpisz nowy PIN';
+          updatePinChangeDots();
+        }
+      }
+    },150);
+  }
+}
+
+function pinChangeDel(){
+  S.pinChangeInput = S.pinChangeInput.slice(0,-1);
+  updatePinChangeDots();
+}
+
+function updatePinChangeDots(){
+  let dots='';
+  for(let i=0;i<4;i++){
+    dots+=`<div class="pin-dot${i<S.pinChangeInput.length?' filled':''}"></div>`;
+  }
+  document.getElementById('pin-change-dots').innerHTML=dots;
+}
+
+// ==================== RENDER ====================
+function render(){
+  renderCoins();
+  if(S.screen==='home') renderHome();
+  else if(S.screen==='acts') renderActs();
+  else if(S.screen==='rewards') renderRewards();
+}
+
+function renderCoins(){
+  const cs = String(S.coins);
+  ['home-coins','acts-coins','rew-coins-top'].forEach(id=>{
+    const el=document.getElementById(id);
+    if(el) el.textContent=cs;
+  });
+  const hc=document.getElementById('h-coins');
+  if(hc) hc.textContent=cs;
+}
+
+function actProgress(act){
+  return S.progress[act.id]||0;
+}
+
+function actDone(act){
+  return actProgress(act)>=act.goal;
+}
+
+function doneCount(){
+  return S.activities.filter(a=>actDone(a)).length;
+}
+
+function getColor(act){
+  return ACT_COLORS[act.colorIdx%ACT_COLORS.length];
+}
+
+// HOME
+function renderHome(){
+  const done = doneCount();
+  const total = S.activities.length;
+  document.getElementById('home-done-label').textContent=`${done} z ${total} ${plural(total,'zadanie','zadania','zadań')}`;
+  document.getElementById('home-streak').textContent=`🔥 ${S.streak}-dniowa seria`;
+  document.getElementById('h-streak').textContent=S.streak;
+  document.getElementById('h-done').textContent=done;
+
+  let html='';
+  S.activities.forEach(act=>{
+    const prog = actProgress(act);
+    const done = prog>=act.goal;
+    const pct = Math.min(100,Math.round(prog/act.goal*100));
+    const c = getColor(act);
+    if(done){
+      html+=`<div class="mini-row">
+        <div class="mini-ico">${act.emoji}</div>
+        <div class="mini-lbl">${act.name}</div>
+        <div class="mini-check">✓</div>
+      </div>`;
+    } else {
+      let txt='';
+      if(act.unit) txt=`${prog} / ${act.goal} ${act.unit}`;
+      else if(act.goal>1) txt=`${prog} / ${act.goal}`;
+      else txt='Jeszcze nie';
+      html+=`<div class="mini-row">
+        <div class="mini-ico">${act.emoji}</div>
+        <div class="mini-lbl">${act.name}</div>
+        <div class="mini-bar-wrap">
+          <div class="mini-bar"><div class="mini-bar-fill" style="width:${pct}%;background:${c.color};"></div></div>
+          <div class="mini-bar-txt">${txt}</div>
+        </div>
+      </div>`;
+    }
+  });
+  document.getElementById('home-acts-list').innerHTML=html;
+}
+
+// ACTS
+function renderActs(){
+  let html='';
+  S.activities.forEach(act=>{
+    const prog = actProgress(act);
+    const done = prog>=act.goal;
+    const pct = Math.min(100,Math.round(prog/act.goal*100));
+    const c = getColor(act);
+    let leftLabel='', rightLabel='';
+    if(done){leftLabel='Gotowe!';rightLabel=act.unit?`${act.goal} / ${act.goal} ${act.unit}`:'';}
+    else{
+      if(act.unit){
+        leftLabel=`${act.goal-prog} ${act.unit} do końca`;
+        rightLabel=`${prog} / ${act.goal} ${act.unit}`;
+      } else if(act.goal>1){
+        leftLabel=`${act.goal-prog} zostało`;
+        rightLabel=`${prog} / ${act.goal}`;
+      } else {
+        leftLabel='Jeszcze nie zrobione';rightLabel='';
+      }
+    }
+    let btnHtml='';
+    if(done){
+      btnHtml=`<button class="btn btn-green">✓ Ukończone!</button>`;
+    } else if(act.parentConfirm){
+      btnHtml=`<button class="btn btn-orange" onclick="tapParentConfirm('${act.id}')">Gotowe – sprawdź, Rodzicu!</button>`;
+    } else {
+      const step=act.step||1;
+      let lbl='';
+      if(act.unit==='min') lbl=`+ ${step} minut`;
+      else if(act.unit==='str.') lbl=`+ ${step} stron${step>1?'y':'a'}`;
+      else if(act.goal>1) lbl=`Zrobiłam (${prog+step > act.goal ? act.goal : prog+step}/${act.goal})`;
+      else lbl='Zrobiłam!';
+      const cl = prog>0?'btn-soft':'btn-orange';
+      btnHtml=`<button class="btn ${cl}" onclick="tapAct('${act.id}')">${lbl}</button>`;
+    }
+    html+=`<div class="act-card" style="border-left-color:${c.color};">
+      <div class="act-top">
+        <div class="act-icon" style="background:${c.bg};">${act.emoji}</div>
+        <div class="act-info">
+          <div class="act-name">${act.name}</div>
+          <div class="act-desc">${act.desc}</div>
+        </div>
+        <div class="act-rew">+${act.reward} 💎</div>
+      </div>
+      <div class="prog-track"><div class="prog-fill" style="width:${pct}%;background:${c.color};"></div></div>
+      <div class="prog-meta"><span>${leftLabel}</span><span>${rightLabel}</span></div>
+      ${btnHtml}
+    </div>`;
+  });
+  document.getElementById('acts-list').innerHTML=html;
+}
+
+// REWARDS
+function renderRewards(){
+  document.getElementById('rew-bal').textContent=S.coins;
+  document.getElementById('rew-earned').textContent=S.earnedAllTime+' 💎';
+  let html='';
+  S.rewards.forEach(r=>{
+    const canBuy = S.coins>=r.cost;
+    html+=`<div class="rew-row">
+      <div class="rew-ico">${r.emoji}</div>
+      <div class="rew-info">
+        <div class="rew-name">${r.name}</div>
+        <div class="rew-cost">${r.cost} kryształków</div>
+      </div>
+      ${canBuy
+        ? `<button class="rew-btn rew-btn-ok" onclick="buyReward('${r.id}','${r.name.replace(/'/g,"\\'")}',${r.cost})">Weź!</button>`
+        : `<button class="rew-btn rew-btn-no">Brakuje ${r.cost-S.coins}</button>`
+      }
+    </div>`;
+  });
+  document.getElementById('rewards-list').innerHTML=html;
+}
+
+// ==================== INTERACTIONS ====================
+function tapAct(actId){
+  const act = S.activities.find(a=>a.id===actId);
+  if(!act||actDone(act)) return;
+  const step = act.step||1;
+  const prev = S.progress[actId]||0;
+  S.progress[actId] = Math.min(act.goal, prev+step);
+  if(S.progress[actId]>=act.goal){
+    earnCoins(act.reward);
+    save();
+    renderActs();
+    renderHome();
+    showPopup('🎉','Zadanie ukończone!',`Zarobiłaś ${act.reward} kryształków za: ${act.name}`);
+  } else {
+    save();
+    renderActs();
+    renderHome();
+  }
+  checkStreak();
+}
+
+function tapParentConfirm(actId){
+  const act = S.activities.find(a=>a.id===actId);
+  if(!act) return;
+  S.pendingConfirmActId = actId;
+  document.getElementById('confirm-act-name').textContent=act.emoji+' '+act.name;
+  document.getElementById('confirm-act-desc').textContent=act.desc;
+  document.getElementById('confirm-overlay').style.display='flex';
+}
+
+function confirmYes(){
+  document.getElementById('confirm-overlay').style.display='none';
+  const act = S.activities.find(a=>a.id===S.pendingConfirmActId);
+  if(!act) return;
+  S.progress[act.id] = act.goal;
+  earnCoins(act.reward);
+  save();
+  renderActs();
+  renderHome();
+  showPopup('🎉','Super robota!',`Zarobiłaś ${act.reward} kryształków za: ${act.name}`);
+  checkStreak();
+}
+
+function confirmNo(){
+  document.getElementById('confirm-overlay').style.display='none';
+  S.pendingConfirmActId=null;
+}
+
+function earnCoins(n){
+  S.coins+=n;
+  S.earnedAllTime+=n;
+  renderCoins();
+}
+
+function checkStreak(){
+  const today=todayStr();
+  if(S.lastCompletedDate!==today && doneCount()>0){
+    if(S.lastCompletedDate===yesterdayStr()){
+      S.streak++;
+    } else if(S.lastCompletedDate!==today){
+      S.streak=1;
+    }
+    S.lastCompletedDate=today;
+    save();
+    renderHome();
+  }
+}
+
+function buyReward(id, name, cost){
+  if(S.coins<cost) return;
+  S.coins-=cost;
+  save();
+  renderRewards();
+  renderCoins();
+  showPopup('🎁','Nagroda odblokowana!',`${name}\n\nPokaż Mamie lub Tacie!`);
+}
+
+function confirmResetDay(){
+  showPopupConfirm('🔄','Zresetować dzień?','Postęp Helenki z dzisiaj zostanie usunięty.',()=>{
+    S.progress={};
+    save();
+    renderHome();
+    renderActs();
+    nav('admin');
+  });
+}
+
+// ==================== POPUP ====================
+function showPopup(ico,title,sub){
+  document.getElementById('pop-ico').textContent=ico;
+  document.getElementById('pop-title').textContent=title;
+  document.getElementById('pop-sub').textContent=sub;
+  document.getElementById('pop-ok').textContent='Super!';
+  document.getElementById('pop-ok').onclick=closePopup;
+  document.getElementById('pop-cancel').style.display='none';
+  document.getElementById('popup-overlay').style.display='flex';
+}
+
+function showPopupConfirm(ico,title,sub,onOk){
+  document.getElementById('pop-ico').textContent=ico;
+  document.getElementById('pop-title').textContent=title;
+  document.getElementById('pop-sub').textContent=sub;
+  document.getElementById('pop-ok').textContent='Tak, resetuj';
+  document.getElementById('pop-ok').onclick=()=>{closePopup();onOk();};
+  document.getElementById('pop-cancel').style.display='block';
+  document.getElementById('pop-cancel').textContent='Anuluj';
+  document.getElementById('pop-cancel').onclick=closePopup;
+  document.getElementById('popup-overlay').style.display='flex';
+}
+
+function closePopup(){
+  document.getElementById('popup-overlay').style.display='none';
+}
+
+// ==================== ADMIN: ACTIVITIES ====================
+function renderAdminActs(){
+  let html='';
+  S.activities.forEach(act=>{
+    html+=`<div class="admin-row">
+      <div class="admin-row-emoji">${act.emoji}</div>
+      <div style="flex:1;">
+        <div class="admin-row-label">${act.name}</div>
+        <div class="admin-row-sub">Cel: ${act.goal} ${act.unit} · ${act.reward} kryształków${act.parentConfirm?' · wymaga potwierdzenia':''}</div>
+      </div>
+      <button class="del-btn" onclick="deleteAct('${act.id}')">Usuń</button>
+    </div>`;
+  });
+  document.getElementById('admin-acts-list').innerHTML=html;
+  buildEmojiGrid('act-emoji-grid', ACT_EMOJIS, 'selectedActEmoji');
+}
+
+function deleteAct(id){
+  S.activities = S.activities.filter(a=>a.id!==id);
+  delete S.progress[id];
+  save();
+  renderAdminActs();
+}
+
+function addActivity(){
+  const name = document.getElementById('new-act-name').value.trim();
+  const desc = document.getElementById('new-act-desc').value.trim();
+  const goal = parseInt(document.getElementById('new-act-goal').value)||1;
+  const unit = document.getElementById('new-act-unit').value.trim();
+  const step = parseInt(document.getElementById('new-act-step').value)||1;
+  const reward = parseInt(document.getElementById('new-act-reward').value)||10;
+  const parentConfirm = document.getElementById('new-act-confirm').checked;
+  if(!name){showPopup('⚠️','Uzupełnij dane','Podaj co najmniej nazwę aktywności.');return;}
+  const colorIdx = S.activities.length % ACT_COLORS.length;
+  S.activities.push({id:uid(),emoji:S.selectedActEmoji,name,desc,goal,unit,step,reward,colorIdx,parentConfirm});
+  save();
+  document.getElementById('new-act-name').value='';
+  document.getElementById('new-act-desc').value='';
+  document.getElementById('new-act-goal').value='1';
+  document.getElementById('new-act-unit').value='';
+  document.getElementById('new-act-step').value='1';
+  document.getElementById('new-act-reward').value='10';
+  document.getElementById('new-act-confirm').checked=false;
+  renderAdminActs();
+}
+
+// ==================== ADMIN: REWARDS ====================
+function renderAdminRewards(){
+  let html='';
+  S.rewards.forEach(r=>{
+    html+=`<div class="admin-row">
+      <div class="admin-row-emoji">${r.emoji}</div>
+      <div style="flex:1;">
+        <div class="admin-row-label">${r.name}</div>
+        <div class="admin-row-sub">${r.cost} kryształków</div>
+      </div>
+      <button class="del-btn" onclick="deleteReward('${r.id}')">Usuń</button>
+    </div>`;
+  });
+  document.getElementById('admin-rewards-list').innerHTML=html;
+  buildEmojiGrid('rew-emoji-grid', REW_EMOJIS, 'selectedRewEmoji');
+}
+
+function deleteReward(id){
+  S.rewards = S.rewards.filter(r=>r.id!==id);
+  save();
+  renderAdminRewards();
+}
+
+function addReward(){
+  const name = document.getElementById('new-rew-name').value.trim();
+  const cost = parseInt(document.getElementById('new-rew-cost').value)||30;
+  if(!name){showPopup('⚠️','Uzupełnij dane','Podaj nazwę nagrody.');return;}
+  S.rewards.push({id:uid(),emoji:S.selectedRewEmoji,name,cost});
+  save();
+  document.getElementById('new-rew-name').value='';
+  document.getElementById('new-rew-cost').value='30';
+  renderAdminRewards();
+}
+
+// ==================== EMOJI GRID ====================
+function buildEmojiGrid(containerId, emojis, stateKey){
+  const container = document.getElementById(containerId);
+  if(!container) return;
+  let html='';
+  emojis.forEach(e=>{
+    const sel = S[stateKey]===e?' sel':'';
+    html+=`<button class="em-opt${sel}" onclick="selectEmoji('${containerId}','${stateKey}','${e}')">${e}</button>`;
+  });
+  container.innerHTML=html;
+}
+
+function selectEmoji(containerId, stateKey, emoji){
+  S[stateKey]=emoji;
+  buildEmojiGrid(containerId, containerId.includes('act') ? ACT_EMOJIS : REW_EMOJIS, stateKey);
+}
+
+// ==================== HELPERS ====================
+function plural(n, one, few, many){
+  if(n===1) return one;
+  if(n>=2&&n<=4) return few;
+  return many;
+}
+
+// ==================== BOOT ====================
+load();
+render();
+
+// ── SERVICE WORKER (inline via blob — offline support) ──
+const SW_SRC = `
+const CACHE = 'helenka-v1';
+const FONT_URL = 'https://fonts.googleapis.com/css2?family=Nunito:wght@700;800;900&display=swap';
+
+self.addEventListener('install', e => {
+  e.waitUntil(
+    caches.open(CACHE).then(c => c.addAll([self.location.href, FONT_URL]).catch(()=>{}))
+  );
+  self.skipWaiting();
+});
+
+self.addEventListener('activate', e => {
+  e.waitUntil(caches.keys().then(keys =>
+    Promise.all(keys.filter(k=>k!==CACHE).map(k=>caches.delete(k)))
+  ));
+  self.clients.claim();
+});
+
+self.addEventListener('fetch', e => {
+  e.respondWith(
+    caches.match(e.request).then(r => r || fetch(e.request).then(res => {
+      if(res && res.status===200 && res.type==='basic'){
+        const clone = res.clone();
+        caches.open(CACHE).then(c=>c.put(e.request, clone));
+      }
+      return res;
+    }).catch(()=>caches.match(e.request)))
+  );
+});
+`;
+
+if('serviceWorker' in navigator){
+  try{
+    const blob = new Blob([SW_SRC],{type:'application/javascript'});
+    const url = URL.createObjectURL(blob);
+    navigator.serviceWorker.register(url,{scope:'./'}).catch(()=>{});
+  }catch(e){}
+}
+
+// ── iOS "Add to Home Screen" banner ──
+const isIOS = /iphone|ipad|ipod/i.test(navigator.userAgent);
+const isStandalone = window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone;
+const dismissed = localStorage.getItem('helenka_banner_dismissed');
+
+if(isIOS && !isStandalone && !dismissed){
+  const banner = document.createElement('div');
+  banner.id='install-banner';
+  banner.innerHTML=`
+    <div style="position:fixed;bottom:0;left:0;right:0;z-index:500;
+      background:#fff;border-top:2px solid #e5e5e5;
+      padding:14px 16px 28px;display:flex;gap:12px;align-items:flex-start;
+      box-shadow:0 -4px 20px rgba(0,0,0,.1);">
+      <div style="font-size:32px;flex-shrink:0;line-height:1;">🌻</div>
+      <div style="flex:1;">
+        <div style="font-family:'Nunito',sans-serif;font-size:14px;font-weight:900;color:#1a1a1a;margin-bottom:4px;">Dodaj do ekranu głównego</div>
+        <div style="font-family:'Nunito',sans-serif;font-size:12px;font-weight:700;color:#afafaf;line-height:1.5;">
+          Stuknij <strong style="color:#1a1a1a;">Udostępnij</strong> (ikona □↑) na dole Safari,<br>
+          a potem <strong style="color:#1a1a1a;">„Dodaj do ekranu głównego"</strong>
+        </div>
+      </div>
+      <button onclick="document.getElementById('install-banner').remove();localStorage.setItem('helenka_banner_dismissed','1');"
+        style="background:none;border:none;font-size:20px;cursor:pointer;color:#afafaf;flex-shrink:0;padding:0;line-height:1;">✕</button>
+    </div>`;
+  document.body.appendChild(banner);
+}
+</script>
+</body>
+</html>
